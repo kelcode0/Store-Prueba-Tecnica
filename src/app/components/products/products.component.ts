@@ -50,7 +50,7 @@ export class ProductsComponent implements OnInit {
       ],
     });
   }
-
+  //carga automatica de productos inicial
   ngOnInit(): void {
     this.httpProducts.getProducts(this.limit, this.skip).subscribe((data) => {
       this.productoRender = data.products;
@@ -58,7 +58,7 @@ export class ProductsComponent implements OnInit {
       console.log(this.productoRender);
     });
   }
-
+  //metodo para agregar productos, los agrega en la priera posicion del array
   datos() {
     const body = this.createProduct.value;
 
@@ -66,7 +66,7 @@ export class ProductsComponent implements OnInit {
       this.productoRender?.unshift(data);
     });
   }
-
+  // metodo para cargar mas datos desde la API
   loadMore() {
     this.httpProducts.getProducts(this.limit, this.skip).subscribe((data) => {
       this.productoRender = data.products;
@@ -80,6 +80,8 @@ export class ProductsComponent implements OnInit {
       }
     });
   }
+
+  //obtencion de los datos por cada input  para verificacion
 
   get titleField() {
     return this.createProduct.get('title');
@@ -111,6 +113,8 @@ export class ProductsComponent implements OnInit {
   get imagesField() {
     return this.createProduct.get('images');
   }
+
+  //metodos para validar informacion suministrada por el usuario de manera reactiva por cada campo
 
   get titleRequerido() {
     return this.titleField?.touched && this.titleField.hasError('required');
