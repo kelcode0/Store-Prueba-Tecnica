@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.header {
+  width: 100%;
+  margin-top: 50px;
+  text-align: center;
+}
+.header h1 {
+  font-size: 1em;
+  text-transform: uppercase;
+}
+.form {
+  margin-top: 60px;
+}
+.products {
+  width: 100%;
+  align-self: center;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+.image {
+  width: 50%;
+  height: 60%;
+  display: grid;
+  place-content: center;
+}
