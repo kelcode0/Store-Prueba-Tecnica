@@ -6,6 +6,7 @@ import { FormComponent } from './components/form/form.component';
 const routes: Routes = [
   {
     path: '',
+
     redirectTo:'/home',
     pathMatch: 'full',
   },
@@ -13,6 +14,12 @@ const routes: Routes = [
     path: 'home',
     component: ProductsComponent,
   },
+  {
+    path:'**',
+    redirectTo:'/home',
+    pathMatch: 'full',
+
+  }
 
 ];
 
