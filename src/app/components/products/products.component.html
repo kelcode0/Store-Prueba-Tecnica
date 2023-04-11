@@ -58,8 +58,16 @@
         <h5 class="card-title">{{ product.title }}</h5>
         <p class="card-text overflow-hidden text">{{ product.description }}</p>
         <button class="btn btn-primary px-3 me-5">Comprar</button>
-        <button class="btn btn-danger" (click)="deleteProduct(this.product.id)">Eliminar</button>
-        <span class="card-text">${{ product.price }}</span>
+        <button class="btn btn-danger" (click)="deleteProduct(this.product.id)">
+          Eliminar
+        </button>
+        <button
+          class="btn btn-warning px-3 me-5 mt-2"
+          (click)="modifiedProduct(this.product.id)"
+        >
+          Modificar
+        </button>
+        <span class="card-text mt-5 me-5">${{ product.price }}</span>
       </div>
     </div>
   </div>
@@ -68,7 +76,7 @@
 <div class="form-product" *ngIf="formAddOpen">
   <div class="form-product__view">
     <div class="p-3 m-0 border-0 bd-example">
-      <form [formGroup]="createProduct" (ngSubmit)="datos()">
+      <form [formGroup]="createProduct" (ngSubmit)="createNewProduct()">
         <div class="mb-3">
           <label for="formGroupExampleInput" class="form-label"
             >Titulo del Producto</label
@@ -247,7 +255,6 @@
         </div>
 
         <div class="d-grid gap-2">
-
           <button
             class="btn btn-primary btn-lg"
             [disabled]="createProduct.invalid"
@@ -255,7 +262,215 @@
             Crear Producto
           </button>
 
-          <button type="button" class="btn btn-danger"  (click)="openAddProduct()">Cerrar</button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="openAddProduct()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="form-product" *ngIf="formModifiedOpen">
+  <div class="form-product__view">
+    <div class="p-3 m-0 border-0 bd-example">
+      <form [formGroup]="createProduct" (ngSubmit)="newModifedProduct()">
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label"
+            >Titulo del Producto</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput"
+            placeholder="Titulo"
+            formControlName="title"
+          />
+          <span *ngIf="titleRequerido" class="text-danger errorMesagge">
+            El <strong>Nombre del Producto</strong> es requerido</span
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="formGroupExampleInput2" class="form-label"
+            >Descripción</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput2"
+            placeholder="Iphone 5 Blanco "
+            formControlName="description"
+          />
+          <span *ngIf="descriptionRequerido" class="text-danger errorMesagge">
+            La <strong>Descripción</strong> es requerida</span
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="formGroupExampleInput3" class="form-label">Precio</label>
+          <input
+            type="number"
+            class="form-control"
+            id="formGroupExampleInput3"
+            placeholder="250"
+            formControlName="price"
+          />
+          <span *ngIf="priceRequerido" class="text-danger errorMesagge">
+            El <strong>Precio</strong> es requerido</span
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="formGroupExampleInput4" class="form-label"
+            >Descuento %</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="formGroupExampleInput4"
+            placeholder="10"
+            formControlName="discountPercentage"
+          />
+          <span *ngIf="discountRequerido" class="text-danger errorMesagge">
+            El <strong>Porcentaje</strong> es requerido</span
+          >
+          <span *ngIf="discountMonto" class="text-danger errorMesagge">
+            El Porcentaje maximo es de <strong> 50%</strong></span
+          >
+          <span *ngIf="discountMonto2" class="text-danger errorMesagge">
+            El Porcentaje minimo es de <strong> 0%</strong></span
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="formGroupExampleInput5" class="form-label"
+            >Clasificación
+          </label>
+          <input
+            type="number"
+            class="form-control"
+            id="formGroupExampleInput5"
+            placeholder="3"
+            formControlName="rating"
+          />
+          <span *ngIf="ratingRequerido" class="text-danger errorMesagge">
+            La<strong> Clasificación</strong> es requerida</span
+          >
+          <span *ngIf="rating" class="text-danger errorMesagge">
+            La <strong> Clasificación</strong> es entre 1 y 5 Estrellas</span
+          >
+          <span *ngIf="ratingMin" class="text-danger errorMesagge">
+            La <strong> Clasificación</strong> es entre 1 y 5 Estrellas</span
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="formGroupExampleInput6" class="form-label"
+            >Cantidad de Producto
+          </label>
+          <input
+            type="number"
+            class="form-control"
+            id="formGroupExampleInput6"
+            placeholder="5"
+            formControlName="stock"
+          />
+          <span *ngIf="stockRequerido" class="text-danger errorMesagge">
+            El<strong> stock</strong> es requerido</span
+          >
+          <span *ngIf="stock" class="text-danger errorMesagge">
+            Maxima Cantidad de <strong> Productos es 100</strong>
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label for="formGroupExampleInput7" class="form-label">Marca</label>
+          <input
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput7"
+            placeholder="Apple"
+            formControlName="brand"
+          />
+
+          <span *ngIf="brandRequerido" class="text-danger errorMesagge">
+            La <strong> Marca </strong> del producto es requerido</span
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="formGroupExampleInput8" class="form-label"
+            >Categoria</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput8"
+            placeholder="Tecnologia"
+            formControlName="category"
+          />
+          <span *ngIf="categoryRequerido" class="text-danger errorMesagge">
+            La <strong> Categoria </strong> del producto es requerido</span
+          >
+        </div>
+        <div class="mb-3">
+          <label for="formGroupExampleInput9" class="form-label"
+            >Miniatura</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput9"
+            placeholder="https://www.miniatura.com/jpg"
+            formControlName="thumbnail"
+          />
+          <span *ngIf="thumbnailRequerido" class="text-danger errorMesagge">
+            La <strong> Miniatura </strong> del producto es requerida</span
+          >
+          <span *ngIf="thumbnail" class="text-danger errorMesagge">
+            La <strong> Miniatura </strong> debe tener el siguiente patron:
+            <strong>https://www.ejemplo.com</strong>
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label for="formGroupExampleInput10" class="form-label">Imagen</label>
+          <input
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput10"
+            placeholder="https://www.Imagen.com/jpg"
+            formControlName="images"
+          />
+          <span *ngIf="imagesRequerido" class="text-danger errorMesagge">
+            La <strong> Imagen </strong> del producto es requerida</span
+          >
+          <span *ngIf="images" class="text-danger errorMesagge">
+            La <strong>Imagen </strong> debe tener el siguiente patron:
+            <strong>https://www.ejemplo.com</strong>
+          </span>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button
+            class="btn btn-warning btn-lg"
+            [disabled]="createProduct.invalid"
+          >
+            Modificar Producto
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="openModifiedProduct()"
+          >
+            Cerrar
+          </button>
         </div>
       </form>
     </div>

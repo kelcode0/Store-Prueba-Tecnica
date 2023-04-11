@@ -5,6 +5,7 @@ import { Product } from 'src/app/models/product.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductsAPIService } from 'src/app/Services/products-api.service';
 import { ToastrService } from 'ngx-toastr';
+import { isNgTemplate } from '@angular/compiler';
 
 @Component({
   selector: 'app-products',
@@ -18,6 +19,8 @@ export class ProductsComponent implements OnInit {
   producto: string = '';
   limit = 8;
   skip = 0;
+  idNewProduct = 0;
+  formModifiedOpen = false;
 
   constructor(
     private httpProducts: ProductsAPIService,
@@ -62,17 +65,42 @@ export class ProductsComponent implements OnInit {
       console.log(this.productoRender);
     });
   }
-  //metodo para agregar productos, los agrega en la priera posicion del array
-  datos() {
+  //metodo para agregar productos, los agrega en la primera posicion del array
+  createNewProduct() {
     const body = this.createProduct.value;
 
     this.httpProducts.createProduct(body).subscribe((data) => {
       this.productoRender?.unshift(data);
     });
 
-    this.formAddOpen = false;
+    this.formAddOpen = !this.formAddOpen;
     this.showSuccess();
   }
+  //Modificar un resultado de la lista
+  modifiedProduct(ID: number) {
+    this.formModifiedOpen = !this.formModifiedOpen;
+    this.idNewProduct = ID;
+    console.log(this.idNewProduct);
+  }
+
+  newModifedProduct() {
+    const body = this.createProduct.value;
+
+    this.httpProducts
+      .updateProduct(body, this.idNewProduct)
+      .subscribe((data) => {
+        const index = this.productoRender.findIndex(
+          (item) => item.id === this.idNewProduct
+        );
+        this.productoRender[index] = data;
+      });
+
+    this.showInfoModified();
+
+    this.openModifiedProduct();
+  }
+
+  // Eliminar productos y renderezar resultado
   deleteProduct(ID: number) {
     this.httpProducts.deleteProduct(ID).subscribe((data) => {
       console.log(data);
@@ -104,12 +132,19 @@ export class ProductsComponent implements OnInit {
   openAddProduct() {
     this.formAddOpen = !this.formAddOpen;
   }
+  openModifiedProduct() {
+    this.formModifiedOpen = !this.formModifiedOpen;
+  }
 
+  //metodos de alerta para informar
   showSuccess() {
     this.toastr.success('Producto Agregado con Exito', 'Producto Nuevo');
   }
   showInfo() {
     this.toastr.error('Producto Eliminado', '');
+  }
+  showInfoModified() {
+    this.toastr.warning('Producto Modificado', '');
   }
 
   //obtencion de los datos por cada input  para verificacion
