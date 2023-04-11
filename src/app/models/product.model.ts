@@ -21,3 +21,8 @@ export interface Categories {
 }
 
 export interface CreateProductDTO extends Omit<Product, 'id'> {}
+
+export interface ProductDelete extends  Product{
+isDeleted:boolean ,
+  deletedOn: string
+}

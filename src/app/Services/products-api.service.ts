@@ -5,6 +5,7 @@ import {
   ProductsAll,
   CreateProductDTO,
   Product,
+  ProductDelete
 } from '../models/product.model';
 
 @Injectable({
@@ -28,6 +29,6 @@ export class ProductsAPIService {
   }
   // //servicio COnfigurado para eliminar un producto
   deleteProduct(id: number) {
-    return this.http.delete<Product>(`${this.API}/${id}`);
+    return this.http.delete<ProductDelete>(`${this.API}/${id}`);
   }
 }

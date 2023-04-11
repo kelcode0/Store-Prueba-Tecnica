@@ -4,6 +4,7 @@ import { Product } from 'src/app/models/product.model';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductsAPIService } from 'src/app/Services/products-api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-products',
@@ -13,13 +14,16 @@ import { ProductsAPIService } from 'src/app/Services/products-api.service';
 export class ProductsComponent implements OnInit {
   productoRender: Product[] = [];
   createProduct: FormGroup;
+  formAddOpen: boolean = false;
   producto: string = '';
   limit = 8;
-  skip = 30;
+  skip = 0;
 
   constructor(
     private httpProducts: ProductsAPIService,
-    private formsBuilder: FormBuilder
+    private formsBuilder: FormBuilder,
+
+    private toastr: ToastrService
   ) {
     this.createProduct = this.formsBuilder.group({
       title: ['', [Validators.required]],
@@ -65,7 +69,23 @@ export class ProductsComponent implements OnInit {
     this.httpProducts.createProduct(body).subscribe((data) => {
       this.productoRender?.unshift(data);
     });
+
+    this.formAddOpen = false;
+    this.showSuccess();
   }
+  deleteProduct(ID: number) {
+    this.httpProducts.deleteProduct(ID).subscribe((data) => {
+      console.log(data);
+    });
+
+    const newPrductrender = this.productoRender.filter(
+      (item) => item.id !== ID
+    );
+
+    this.productoRender = newPrductrender;
+    this.showInfo();
+  }
+
   // metodo para cargar mas datos desde la API
   loadMore() {
     this.httpProducts.getProducts(this.limit, this.skip).subscribe((data) => {
@@ -79,6 +99,17 @@ export class ProductsComponent implements OnInit {
         this.skip += this.limit;
       }
     });
+  }
+
+  openAddProduct() {
+    this.formAddOpen = !this.formAddOpen;
+  }
+
+  showSuccess() {
+    this.toastr.success('Producto Agregado con Exito', 'Producto Nuevo');
+  }
+  showInfo() {
+    this.toastr.error('Producto Eliminado', '');
   }
 
   //obtencion de los datos por cada input  para verificacion

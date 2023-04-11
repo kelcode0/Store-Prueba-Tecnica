@@ -1,32 +1,64 @@
 .container {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.header {
-  width: 100%;
-  margin-top: 50px;
-  text-align: center;
-}
-.header h1 {
-  font-size: 1em;
-  text-transform: uppercase;
-}
-.form {
-  margin-top: 60px;
-}
-.products {
+
   width: 100%;
   align-self: center;
   height: 70%;
-  display: flex;
-  justify-content: center;
+
+  justify-content:space-evenly;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 27px;
+
+  .img {
+    width: 285px;
+    height: 178px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .text {
+    font-size: 14px;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 3.6em;
+    line-height: 1.8em;
+    cursor: pointer;
+  }
 }
-.image {
-  width: 50%;
-  height: 60%;
-  display: grid;
-  place-content: center;
+
+.breadc {
+  width: auto;
+  height: auto;
+  overflow: hidden;
+  padding: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+
+
+  button {
+      display: block;
+      float: right;
+      flex: 20%;
+      max-width: 200px;
+  }
 }
+
+.form-product{
+  position: absolute;
+  background: #bdbdbd99;
+  top: 0;
+  left: 0;
+  width: 100%;
+  .form-product__view{
+      width: 400px;
+      position: relative;
+      margin: 46px auto;
+      background: #fff;
+      border-radius: 7px;
+  }
+}
+
